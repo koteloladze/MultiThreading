@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MultiThreading.Task3.MatrixMultiplier.Matrices;
 using MultiThreading.Task3.MatrixMultiplier.Multipliers;
@@ -18,8 +19,48 @@ namespace MultiThreading.Task3.MatrixMultiplier.Tests
         [TestMethod]
         public void ParallelEfficiencyTest()
         {
-            // todo: implement a test method to check the size of the matrix which makes parallel multiplication more effective than
-            // todo: the regular one
+            var efficientSize = 0;
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            for (int i = 1; i < int.MaxValue; i++)
+            {
+                var m1 = new Matrix(i, i, true);
+                var m2 = new Matrix(i, i, true);
+
+                TimeSpan? elapsed = null;
+                TimeSpan? elapsedParallel = null;
+
+                stopwatch.Start();
+                new MatricesMultiplier().Multiply(m1, m2);
+                stopwatch.Stop();
+
+                if (!elapsed.HasValue || elapsed.Value > stopwatch.Elapsed)
+                {
+                    elapsed = stopwatch.Elapsed;
+                }
+
+                stopwatch.Reset();
+
+                stopwatch.Start();
+                new MatricesMultiplierParallel().Multiply(m1, m2);
+                stopwatch.Stop();
+
+                if (!elapsedParallel.HasValue || elapsedParallel.Value > stopwatch.Elapsed)
+                {
+                    elapsedParallel = stopwatch.Elapsed;
+                }
+
+                stopwatch.Reset();
+
+                if (elapsed > elapsedParallel)
+                {
+                    efficientSize = i;
+
+                    break;
+                }
+            }
+
+            Assert.AreNotEqual(0, efficientSize);
         }
 
         #region private methods
