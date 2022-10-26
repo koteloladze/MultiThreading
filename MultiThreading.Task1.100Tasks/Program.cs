@@ -4,6 +4,8 @@
  * “Task #0 – {iteration number}”.
  */
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MultiThreading.Task1._100Tasks
 {
@@ -19,7 +21,7 @@ namespace MultiThreading.Task1._100Tasks
             Console.WriteLine("Each Task should iterate from 1 to 1000 and print into the console the following string:");
             Console.WriteLine("“Task #0 – {iteration number}”.");
             Console.WriteLine();
-            
+
             HundredTasks();
 
             Console.ReadLine();
@@ -27,12 +29,23 @@ namespace MultiThreading.Task1._100Tasks
 
         static void HundredTasks()
         {
-            // feel free to add your code here
+            var tasks = new Task[TaskAmount];
+
+            for (int i = 0; i < TaskAmount; i++)
+            {
+                var taskNumber = i;
+                tasks[i] = Task.Run(() => Output(taskNumber));
+            }
+
+            Task.WaitAll(tasks);
         }
 
-        static void Output(int taskNumber, int iterationNumber)
+        static void Output(int taskNumber)
         {
-            Console.WriteLine($"Task #{taskNumber} – {iterationNumber}");
+            for (int i = 0; i < MaxIterationsCount; i++)
+            {
+                Console.WriteLine($"Task #{taskNumber} – {i}");
+            }
         }
     }
 }
