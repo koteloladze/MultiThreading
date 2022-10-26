@@ -20,7 +20,7 @@ namespace MultiThreading.Task3.MatrixMultiplier.Tests
         public void ParallelEfficiencyTest()
         {
             var efficientSize = 0;
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            Stopwatch stopwatch = new Stopwatch();
 
             for (int i = 1; i < int.MaxValue; i++)
             {

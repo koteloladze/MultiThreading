@@ -16,7 +16,7 @@ namespace MultiThreading.Task2.Chaining
         const int MaxQuantity = 10;
         const int RangeOfNumbers = 100;
 
-        protected static Random RandomGenerator = new Random();
+        private static Random RandomGenerator = new Random();
 
         static void Main(string[] args)
         {

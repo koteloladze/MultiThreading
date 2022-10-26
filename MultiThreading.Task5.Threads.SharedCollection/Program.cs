@@ -36,7 +36,7 @@ namespace MultiThreading.Task5.Threads.SharedCollection
 
             var writingTask = Task.Run(() =>
             {
-                for (int i = 1; i < numberCount; i++)
+                for (int i = 0; i < numberCount; i++)
                 {
                     writeSemaphore.Wait();
 
@@ -48,7 +48,7 @@ namespace MultiThreading.Task5.Threads.SharedCollection
 
             var readingTask = Task.Run(() =>
             {
-                for (int i = 1; i < numberCount; i++)
+                for (int i = 0; i < numberCount; i++)
                 {
                     readSemaphore.Wait();
 
@@ -58,7 +58,7 @@ namespace MultiThreading.Task5.Threads.SharedCollection
                 }
             });
 
-            Task.WaitAll();
+            Task.WaitAll(writingTask, readingTask);
         }
     }
 }
